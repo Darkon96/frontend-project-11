@@ -1,7 +1,11 @@
 develop:
 	npx webpack serve
 
+publish:
+	npm publish --dry-run
+
 install:
+	sudo npm link
 	npm ci
 
 build:
