@@ -5,7 +5,7 @@ publish:
 	npm publish --dry-run
 
 install:
-	sudo npm link
+	npm link
 	npm ci
 
 build:
