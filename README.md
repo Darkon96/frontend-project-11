@@ -16,4 +16,4 @@ yarn build
 
 to bundle your application
 
-https://frontend-project-11-z8ve-darkon96s-projects.vercel.app
+https://frontend-project-11-z8ve.vercel.app
