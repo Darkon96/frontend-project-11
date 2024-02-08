@@ -1,5 +1,5 @@
-#!/usr/bin/env node
 import './styles.scss';
 import 'bootstrap';
+import initApp from './init.js';
 
-console.log('Hello World!');
+initApp();
