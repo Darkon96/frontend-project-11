@@ -88,7 +88,7 @@ const app = (initialState, elements, i18n) => {
         }
         if (error.name === 'ValidationError') {
           watchedState.form.valid = false;
-          watchedState.downloadingProcess.errors = { key: error.message };
+          watchedState.form.processFeedback = { key: error.message };
         }
         watchedState.downloadingProcess.status = 'failed';
         console.dir(error);
@@ -124,11 +124,11 @@ export default () => {
       readPosts: [],
     },
     downloadingProcess: {
-      status: 'success', // success, downloading, failed
+      status: 'success',
       errors: null,
     },
     form: {
-      valid: true, // true, false
+      valid: true,
       processFeedback: null,
     },
   };
