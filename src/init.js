@@ -81,14 +81,14 @@ const app = (initialState, elements, i18n) => {
       })
       .catch((error) => {
         if (error.isAxiosError) {
-          watchedState.downloadingProcess.errors = { key: 'downloadingProcess.errors.netError'};
+          watchedState.downloadingProcess.errors = { key: 'downloadingProcess.errors.netError' };
         }
         if (error.isParseError) {
-          watchedState.downloadingProcess.errors = { key: 'downloadingProcess.errors.parseError'};
+          watchedState.downloadingProcess.errors = { key: 'downloadingProcess.errors.parseError' };
         }
         if (error.name === 'ValidationError') {
           watchedState.form.valid = false;
-          watchedState.downloadingProcess.errors = { key: error.message};
+          watchedState.downloadingProcess.errors = { key: error.message };
         }
         watchedState.downloadingProcess.status = 'failed';
         console.dir(error);
