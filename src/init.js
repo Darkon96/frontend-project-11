@@ -16,11 +16,11 @@ const proxifyUrl = (rssUrl) => {
 const validate = (feeds, feedUrl) => {
   yup.setLocale({
     string: {
-      url: () => ('downloadingProcess.errors.notValidURL'),
+      url: () => ('feedback.error.notValidURL'),
     },
     mixed: {
-      required: () => ('downloadingProcess.errors.urlRequired'),
-      notOneOf: () => ('downloadingProcess.errors.alreadyExists'),
+      required: () => ('feedback.error.urlRequired'),
+      notOneOf: () => ('feedback.error.alreadyExists'),
     },
   });
 
@@ -81,10 +81,10 @@ const app = (initialState, elements, i18n) => {
       })
       .catch((error) => {
         if (error.isAxiosError) {
-          watchedState.downloadingProcess.errors = { key: 'downloadingProcess.errors.netError' };
+          watchedState.downloadingProcess.errors = { key: 'feedback.error.netError' };
         }
         if (error.isParseError) {
-          watchedState.downloadingProcess.errors = { key: 'downloadingProcess.errors.parseError' };
+          watchedState.downloadingProcess.errors = { key: 'feedback.error.parseError' };
         }
         if (error.name === 'ValidationError') {
           watchedState.form.valid = false;
@@ -121,14 +121,14 @@ export default () => {
     posts: [],
     ui: {
       modalPostId: null,
-      seenPosts: [],
+      readPosts: [],
     },
     downloadingProcess: {
-      status: 'success',
+      status: 'success', // success, downloading, failed
       errors: null,
     },
     form: {
-      valid: true,
+      valid: true, // true, false
       processFeedback: null,
     },
   };

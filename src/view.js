@@ -23,11 +23,11 @@ const renderFeedback = (state, i18n, elements) => {
   if (state.form.processFeedback) {
     const newFeedbackEl = document.createElement('p');
     newFeedbackEl.classList.add('feedback', 'm-0', 'position-absolute', 'small');
-    if (state.form.processFeedback.type === 'error') {
+    if (state.downloadingProcess.status === 'failed') {
       elements.urlInput.classList.add('is-invalid');
       newFeedbackEl.classList.add('text-danger');
     }
-    if (state.form.processFeedback.type === 'success') {
+    if (state.downloadingProcess.status === 'success') {
       newFeedbackEl.classList.add('text-success');
     }
     newFeedbackEl.textContent = i18n.t(state.form.processFeedback.key);
@@ -128,7 +128,7 @@ const renderModal = (state) => {
 
 const renderDownloadingStatus = (state, elements, i18n, status) => {
   switch (status) {
-    case 'idle':
+    case 'success':
       elements.urlInput.classList.remove('disabled');
       elements.submitButton.classList.remove('disabled');
       elements.form.reset();
