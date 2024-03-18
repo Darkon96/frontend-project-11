@@ -16,11 +16,11 @@ const proxifyUrl = (rssUrl) => {
 const validate = (feeds, feedUrl) => {
   yup.setLocale({
     string: {
-      url: () => ('feedback.error.notValidURL'),
+      url: () => ('downloadingProcess.errors.notValidURL'),
     },
     mixed: {
-      required: () => ('feedback.error.urlRequired'),
-      notOneOf: () => ('feedback.error.alreadyExists'),
+      required: () => ('downloadingProcess.errors.urlRequired'),
+      notOneOf: () => ('downloadingProcess.errors.alreadyExists'),
     },
   });
 
@@ -76,19 +76,19 @@ const app = (initialState, elements, i18n) => {
         }));
         watchedState.feeds.unshift(feed);
         watchedState.posts.unshift(...posts);
-        watchedState.form.processFeedback = { key: 'feedback.success.feedAdded', type: 'success' };
-        watchedState.downloadingProcess.status = 'idle';
+        watchedState.form.processFeedback = { key: 'feedback.success.feedAdded' };
+        watchedState.downloadingProcess.status = 'success';
       })
       .catch((error) => {
         if (error.isAxiosError) {
-          watchedState.form.processFeedback = { key: 'feedback.error.netError', type: 'error' };
+          watchedState.downloadingProcess.errors = { key: 'downloadingProcess.errors.netError'};
         }
         if (error.isParseError) {
-          watchedState.form.processFeedback = { key: 'feedback.error.parseError', type: 'error' };
+          watchedState.downloadingProcess.errors = { key: 'downloadingProcess.errors.parseError'};
         }
         if (error.name === 'ValidationError') {
           watchedState.form.valid = false;
-          watchedState.form.processFeedback = { key: error.message, type: 'error' };
+          watchedState.downloadingProcess.errors = { key: error.message};
         }
         watchedState.downloadingProcess.status = 'failed';
         console.dir(error);
@@ -116,18 +116,19 @@ export default () => {
   };
 
   const defaultState = {
+    lng: 'ru',
     feeds: [],
     posts: [],
     ui: {
       modalPostId: null,
-      readPosts: [],
+      seenPosts: [],
     },
     downloadingProcess: {
-      status: 'idle', // idle, downloading, failed
+      status: 'success',
+      errors: null,
     },
     form: {
-      lng: '',
-      valid: true, // true, false
+      valid: true,
       processFeedback: null,
     },
   };
@@ -135,7 +136,7 @@ export default () => {
   const i18nInstance = i18next.createInstance();
   i18nInstance
     .init({
-      lng: 'ru',
+      lng: defaultState.lng,
       resources,
     })
     .then(() => app(defaultState, defaultElements, i18nInstance));
