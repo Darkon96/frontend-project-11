@@ -20,18 +20,21 @@ const renderFeedback = (state, i18n, elements) => {
   if (feedbackEl) { feedbackEl.remove(); }
   elements.urlInput.classList.remove('is-invalid');
 
-  if (state.form.processFeedback) {
+  if (state.downloadingProcess.status) {
     const newFeedbackEl = document.createElement('p');
     newFeedbackEl.classList.add('feedback', 'm-0', 'position-absolute', 'small');
     if (state.downloadingProcess.status === 'failed') {
       elements.urlInput.classList.add('is-invalid');
       newFeedbackEl.classList.add('text-danger');
+      newFeedbackEl.textContent = i18n.t(state.downloadingProcess.error.key);
+    fromContainer.append(newFeedbackEl);
     }
     if (state.downloadingProcess.status === 'success') {
       newFeedbackEl.classList.add('text-success');
-    }
-    newFeedbackEl.textContent = i18n.t(state.form.processFeedback.key);
+      newFeedbackEl.textContent = i18n.t('feedback.success.feedAdded');
     fromContainer.append(newFeedbackEl);
+    }
+    
   }
 };
 
@@ -80,7 +83,7 @@ const renderPosts = (state, i18n) => {
     postEl.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-item-start', 'border-0', 'border-end-0');
 
     const postTitle = document.createElement('a');
-    const isRead = state.ui.readPosts.includes(post.postId);
+    const isRead = state.ui.seenPosts.includes(post.postId);
     const postTitleClasses = isRead ? ['fw-normal', 'link-secondary'] : ['fw-bold'];
     postTitle.classList.add(...postTitleClasses);
     postTitle.href = post.link;
@@ -165,7 +168,7 @@ const render = (state, elements, i18n) => (path, value) => {
     case 'downloadingProcess.status':
       renderDownloadingStatus(state, elements, i18n, value);
       break;
-    case 'form.processFeedback':
+    case 'downloadingProcess.processFeedback':
       renderFeedback(state, i18n, elements);
       break;
     case 'feeds':
@@ -174,7 +177,7 @@ const render = (state, elements, i18n) => (path, value) => {
     case 'posts':
       renderPosts(state, i18n);
       break;
-    case 'ui.readPosts':
+    case 'ui.seenPosts':
       renderPosts(state, i18n);
       break;
     case 'ui.modalPostId':

@@ -56,8 +56,6 @@ const app = (initialState, elements, i18n) => {
     watchedState.downloadingProcess.status = 'downloading';
     validate(watchedState.feeds, url)
       .then(() => {
-        watchedState.form.valid = true;
-        watchedState.form.processFeedback = null;
         return axios.get(proxifyUrl(url));
       })
       .then((response) => {
@@ -76,19 +74,17 @@ const app = (initialState, elements, i18n) => {
         }));
         watchedState.feeds.unshift(feed);
         watchedState.posts.unshift(...posts);
-        watchedState.form.processFeedback = { key: 'feedback.success.feedAdded' };
         watchedState.downloadingProcess.status = 'success';
       })
       .catch((error) => {
         if (error.isAxiosError) {
-          watchedState.downloadingProcess.errors = { key: 'feedback.error.netError' };
+          watchedState.downloadingProcess.error = { key: 'feedback.error.netError' };
         }
         if (error.isParseError) {
-          watchedState.downloadingProcess.errors = { key: 'feedback.error.parseError' };
+          watchedState.downloadingProcess.error = { key: 'feedback.error.parseError' };
         }
         if (error.name === 'ValidationError') {
-          watchedState.form.valid = false;
-          watchedState.form.processFeedback = { key: error.message };
+          watchedState.downloadingProcess.error = { key: error.message};
         }
         watchedState.downloadingProcess.status = 'failed';
         console.dir(error);
@@ -101,7 +97,7 @@ const app = (initialState, elements, i18n) => {
       return;
     }
     watchedState.ui.modalPostId = id;
-    watchedState.ui.readPosts.push(id);
+    watchedState.ui.seenPosts.push(id);
   });
 };
 
@@ -121,15 +117,11 @@ export default () => {
     posts: [],
     ui: {
       modalPostId: null,
-      readPosts: [],
+      seenPosts: [],
     },
     downloadingProcess: {
       status: 'success',
-      errors: null,
-    },
-    form: {
-      valid: true,
-      processFeedback: null,
+      error: null,
     },
   };
 
