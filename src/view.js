@@ -27,14 +27,13 @@ const renderFeedback = (state, i18n, elements) => {
       elements.urlInput.classList.add('is-invalid');
       newFeedbackEl.classList.add('text-danger');
       newFeedbackEl.textContent = i18n.t(state.downloadingProcess.error.key);
-    fromContainer.append(newFeedbackEl);
+      fromContainer.append(newFeedbackEl);
     }
     if (state.downloadingProcess.status === 'success') {
       newFeedbackEl.classList.add('text-success');
       newFeedbackEl.textContent = i18n.t('feedback.success.feedAdded');
-    fromContainer.append(newFeedbackEl);
+      fromContainer.append(newFeedbackEl);
     }
-    
   }
 };
 

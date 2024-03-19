@@ -55,9 +55,7 @@ const app = (initialState, elements, i18n) => {
     const url = elements.urlInput.value;
     watchedState.downloadingProcess.status = 'downloading';
     validate(watchedState.feeds, url)
-      .then(() => {
-        return axios.get(proxifyUrl(url));
-      })
+      .then(() => axios.get(proxifyUrl(url)))
       .then((response) => {
         const { contents } = response.data;
         const parsedData = parse(contents);
@@ -84,7 +82,7 @@ const app = (initialState, elements, i18n) => {
           watchedState.downloadingProcess.error = { key: 'feedback.error.parseError' };
         }
         if (error.name === 'ValidationError') {
-          watchedState.downloadingProcess.error = { key: error.message};
+          watchedState.downloadingProcess.error = { key: error.message };
         }
         watchedState.downloadingProcess.status = 'failed';
         console.dir(error);
